@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 – soft violet</title>
+  <style>
+    :root {
+      /* soft light violet palette */
+      --violet-primary: #9575cd;
+      --violet-light: #e3d7fb;
+      --violet-dark: #4527a0;
+      --violet-glow: #c9b6f5;
+      --violet-mid: #7e57c2;
+      --bg-soft: #f8f5ff;
+      --text-main: #4b3a76;
+      --text-soft: #3a2a63;
+      --border-soft: #ddd0f5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 0%, #fbf9ff 0%, #f4efff 45%, #ece4ff 100%);
+      overflow: hidden;
+      position: relative;
+      cursor: default;
+      color: var(--text-main);
+    }
+
+    /* ============ ANIMATED BACKGROUND – SOFT VIOLET DREAMSCAPE ============ */
+    .background-animation {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    /* subtle violet dot grid */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(149, 117, 205, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(149, 117, 205, 0.07) 1px, transparent 1px);
+      background-size: 58px 58px;
+      animation: gridDrift 26s linear infinite;
+    }
+    @keyframes gridDrift {
+      0%   { transform: translate(0, 0) rotate(0deg); }
+      25%  { transform: translate(14px, -14px) rotate(0.4deg); }
+      50%  { transform: translate(0, -30px) rotate(0deg); }
+      75%  { transform: translate(-14px, -14px) rotate(-0.4deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+
+    /* ---------- 1. AURORA BLOBS (morphing violet clouds) ---------- */
+    .aurora-layer {
+      position: absolute;
+      inset: 0;
+      will-change: transform;
+    }
+    .aurora-layer span {
+      position: absolute;
+      display: block;
+      border-radius: 50%;
+      filter: blur(85px);
+      opacity: 0.55;
+      animation: auroraDrift 20s ease-in-out infinite;
+    }
+    .aurora-layer span:nth-child(1) {
+      width: 540px; height: 540px; top: -18%; left: -12%;
+      background: radial-gradient(circle at 35% 35%, #ede2ff, #b39ddb 55%, #7e57c2);
+      animation-duration: 20s;
+    }
+    .aurora-layer span:nth-child(2) {
+      width: 440px; height: 440px; bottom: -16%; right: -10%;
+      background: radial-gradient(circle at 30% 30%, #f2eaff, #c5a8f0 50%, #6a4bb5);
+      animation-duration: 24s; animation-delay: -4s; opacity: 0.5;
+    }
+    .aurora-layer span:nth-child(3) {
+      width: 380px; height: 380px; top: 42%; left: 52%;
+      background: radial-gradient(circle at 30% 30%, #f0e7ff, #b39ddb 55%, #5e35b1);
+      animation-duration: 17s; animation-delay: -8s; opacity: 0.4;
+    }
+    .aurora-layer span:nth-child(4) {
+      width: 300px; height: 300px; top: 12%; right: 16%;
+      background: radial-gradient(circle at 30% 30%, #f8f2ff, #cbb6f5 50%, #8e6bd0);
+      animation-duration: 22s; animation-delay: -12s; opacity: 0.45;
+    }
+
+    @keyframes auroraDrift {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+        border-radius: 50% 50% 50% 50%;
+      }
+      25% {
+        transform: translate(65px, -50px) scale(1.14);
+        border-radius: 62% 38% 55% 45%;
+      }
+      50% {
+        transform: translate(-45px, 55px) scale(0.92);
+        border-radius: 44% 56% 40% 60%;
+      }
+      75% {
+        transform: translate(45px, 30px) scale(1.07);
+        border-radius: 55% 45% 62% 38%;
+      }
+    }
+
+    /* ---------- 2. RISING BUBBLES ---------- */
+    .bubble-layer {
+      position: absolute;
+      inset: 0;
+    }
+    .bubble-layer span {
+      position: absolute;
+      bottom: -140px;
+      display: block;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 28%,
+        rgba(255, 255, 255, 0.95),
+        rgba(206, 183, 246, 0.55) 45%,
+        rgba(126, 87, 194, 0.22) 70%,
+        transparent 73%);
+      border: 1px solid rgba(179, 157, 219, 0.5);
+      box-shadow:
+        0 0 22px rgba(179, 157, 219, 0.45),
+        inset 0 0 18px rgba(255, 255, 255, 0.65);
+      opacity: 0;
+      animation: bubbleRise 20s linear infinite;
+    }
+    .bubble-layer span:nth-child(1)  { left: 6%;  width: 26px; height: 26px; animation-duration: 17s; animation-delay: 0s; }
+    .bubble-layer span:nth-child(2)  { left: 16%; width: 14px; height: 14px; animation-duration: 21s; animation-delay: 3s; }
+    .bubble-layer span:nth-child(3)  { left: 27%; width: 38px; height: 38px; animation-duration: 25s; animation-delay: 6s; }
+    .bubble-layer span:nth-child(4)  { left: 38%; width: 18px; height: 18px; animation-duration: 19s; animation-delay: 1.5s; }
+    .bubble-layer span:nth-child(5)  { left: 48%; width: 30px; height: 30px; animation-duration: 23s; animation-delay: 8s; }
+    .bubble-layer span:nth-child(6)  { left: 58%; width: 12px; height: 12px; animation-duration: 16s; animation-delay: 4.5s; }
+    .bubble-layer span:nth-child(7)  { left: 68%; width: 34px; height: 34px; animation-duration: 26s; animation-delay: 10s; }
+    .bubble-layer span:nth-child(8)  { left: 78%; width: 20px; height: 20px; animation-duration: 20s; animation-delay: 2s; }
+    .bubble-layer span:nth-child(9)  { left: 88%; width: 44px; height: 44px; animation-duration: 28s; animation-delay: 7s; }
+    .bubble-layer span:nth-child(10) { left: 94%; width: 16px; height: 16px; animation-duration: 18s; animation-delay: 12s; }
+
+    @keyframes bubbleRise {
+      0%   { transform: translate(0, 0) scale(0.6); opacity: 0; }
+      10%  { opacity: 0.9; }
+      50%  { transform: translate(38px, -48vh) scale(1); opacity: 0.8; }
+      90%  { opacity: 0.45; }
+      100% { transform: translate(-28px, -108vh) scale(1.15); opacity: 0; }
+    }
+
+    /* ---------- 3. TWINKLING SPARKLES ---------- */
+    .sparkle-layer {
+      position: absolute;
+      inset: 0;
+      will-change: transform;
+    }
+    .sparkle-layer span {
+      position: absolute;
+      display: block;
+      width: 14px; height: 14px;
+      background: radial-gradient(circle, #ffffff 0%, #dcc9ff 45%, transparent 72%);
+      clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+      animation: twinkle 3.6s ease-in-out infinite;
+      opacity: 0;
+      filter: drop-shadow(0 0 8px rgba(179, 157, 219, 0.9));
+    }
+    .sparkle-layer span:nth-child(1)  { top: 12%; left: 9%;  width: 16px; height: 16px; animation-delay: 0s;   animation-duration: 3.4s; }
+    .sparkle-layer span:nth-child(2)  { top: 26%; left: 24%; animation-delay: 1.1s; animation-duration: 4.1s; }
+    .sparkle-layer span:nth-child(3)  { top: 8%;  left: 44%; width: 10px; height: 10px; animation-delay: 2.2s; animation-duration: 3s; }
+    .sparkle-layer span:nth-child(4)  { top: 34%; left: 62%; width: 18px; height: 18px; animation-delay: 0.6s; animation-duration: 4.6s; }
+    .sparkle-layer span:nth-child(5)  { top: 16%; left: 80%; animation-delay: 1.8s; animation-duration: 3.7s; }
+    .sparkle-layer span:nth-child(6)  { top: 52%; left: 14%; width: 12px; height: 12px; animation-delay: 2.8s; animation-duration: 3.2s; }
+    .sparkle-layer span:nth-child(7)  { top: 62%; left: 34%; animation-delay: 0.3s; animation-duration: 4.3s; }
+    .sparkle-layer span:nth-child(8)  { top: 72%; left: 56%; width: 16px; height: 16px; animation-delay: 1.5s; animation-duration: 3.9s; }
+    .sparkle-layer span:nth-child(9)  { top: 58%; left: 76%; width: 10px; height: 10px; animation-delay: 2.5s; animation-duration: 3.1s; }
+    .sparkle-layer span:nth-child(10) { top: 84%; left: 20%; animation-delay: 3.1s; animation-duration: 4.4s; }
+    .sparkle-layer span:nth-child(11) { top: 88%; left: 66%; width: 12px; height: 12px; animation-delay: 0.9s; animation-duration: 3.6s; }
+    .sparkle-layer span:nth-child(12) { top: 44%; left: 90%; width: 18px; height: 18px; animation-delay: 2s;   animation-duration: 4.8s; }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0;   transform: scale(0.4) rotate(0deg); }
+      50%      { opacity: 1;   transform: scale(1.1) rotate(45deg); }
+    }
+
+    /* ---------- 4. EXPANDING RINGS ---------- */
+    .ring-layer {
+      position: absolute;
+      inset: 0;
+      will-change: transform;
+    }
+    .ring-layer span {
+      position: absolute;
+      display: block;
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(149, 117, 205, 0.4);
+      box-shadow: 0 0 40px rgba(179, 157, 219, 0.25), inset 0 0 40px rgba(179, 157, 219, 0.15);
+      opacity: 0;
+      animation: ringExpand 10s ease-out infinite;
+    }
+    .ring-layer span:nth-child(1) { top: 8%;  left: 6%;  animation-delay: 0s; }
+    .ring-layer span:nth-child(2) { top: 48%; left: 58%; width: 460px; height: 460px; animation-delay: 3.4s; animation-duration: 12s; }
+    .ring-layer span:nth-child(3) { top: 62%; left: 12%; width: 260px; height: 260px; animation-delay: 6.6s; animation-duration: 9s; }
+
+    @keyframes ringExpand {
+      0%   { transform: scale(0.2); opacity: 0; }
+      20%  { opacity: 0.75; }
+      100% { transform: scale(1.7); opacity: 0; }
+    }
+
+    /* ---------- 5. DRIFTING PETALS ---------- */
+    .petal-layer {
+      position: absolute;
+      inset: 0;
+      will-change: transform;
+    }
+    .petal-layer span {
+      position: absolute;
+      bottom: -60px;
+      display: block;
+      width: 16px; height: 16px;
+      border-radius: 50% 0 50% 0;
+      background: linear-gradient(135deg, rgba(206, 183, 246, 0.95), rgba(149, 117, 205, 0.5));
+      box-shadow: 0 0 12px rgba(179, 157, 219, 0.7);
+      opacity: 0;
+      animation: petalDrift 17s ease-in-out infinite;
+    }
+    .petal-layer span:nth-child(1) { left: 12%; width: 14px; height: 14px; animation-duration: 17s; animation-delay: 0s; }
+    .petal-layer span:nth-child(2) { left: 28%; width: 20px; height: 20px; animation-duration: 21s; animation-delay: 2.5s; }
+    .petal-layer span:nth-child(3) { left: 44%; width: 12px; height: 12px; animation-duration: 15s; animation-delay: 5s; }
+    .petal-layer span:nth-child(4) { left: 61%; width: 18px; height: 18px; animation-duration: 19s; animation-delay: 7.5s; }
+    .petal-layer span:nth-child(5) { left: 76%; width: 13px; height: 13px; animation-duration: 23s; animation-delay: 1.5s; }
+    .petal-layer span:nth-child(6) { left: 90%; width: 22px; height: 22px; animation-duration: 20s; animation-delay: 10s; }
+
+    @keyframes petalDrift {
+      0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.85; }
+      50%  { transform: translate(70px, -45vh) rotate(180deg); opacity: 0.65; }
+      100% { transform: translate(-45px, -92vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ============ MAIN CONTENT ============ */
+    .content-wrapper {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 40px 30px;
+      max-width: 600px;
+      width: 90%;
+    }
+
+    .error-code {
+      font-size: clamp(120px, 20vw, 200px);
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(135deg, #e9dcff 0%, #b39ddb 30%, #cbb6f5 50%, #9575cd 75%, #5e35b1 100%);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientShift 4s ease-in-out infinite;
+      letter-spacing: -8px;
+      user-select: none;
+      position: relative;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+
+    .error-glow {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(149, 117, 205, 0.45) 0%, transparent 70%);
+      filter: blur(45px);
+      animation: glowPulse 3.2s ease-in-out infinite;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+      50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.2); }
+    }
+
+    .error-message {
+      font-size: clamp(18px, 3vw, 28px);
+      color: #5b3fa8;
+      margin-top: 10px;
+      margin-bottom: 8px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 0 18px rgba(179, 157, 219, 0.8);
+    }
+
+    .error-description {
+      font-size: clamp(14px, 2vw, 18px);
+      color: #6b57a0;
+      margin-bottom: 35px;
+      line-height: 1.6;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      white-space: nowrap;
+      background: transparent;
+    }
+
+    .btn svg {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+
+    /* back button – outline violet */
+    .btn-back {
+      color: #6b4fb0;
+      border: 2.5px solid #b39ddb;
+      box-shadow: 0 0 20px rgba(149, 117, 205, 0.28), inset 0 0 15px rgba(179, 157, 219, 0.12);
+      background: rgba(248, 245, 255, 0.5);
+    }
+    .btn-back:hover {
+      background: rgba(179, 157, 219, 0.22);
+      box-shadow: 0 0 40px rgba(149, 117, 205, 0.7), inset 0 0 25px rgba(179, 157, 219, 0.35);
+      transform: translateY(-3px);
+      border-color: #cbb6f5;
+      color: #3d2a70;
+    }
+    .btn-back:hover svg { transform: translateX(-4px); }
+    .btn-back:active { transform: translateY(-1px) scale(0.98); }
+
+    /* home button – filled violet */
+    .btn-home {
+      background: linear-gradient(135deg, #b39ddb, #7e57c2);
+      color: #f8f4ff;
+      border: 2.5px solid transparent;
+      box-shadow: 0 8px 30px rgba(149, 117, 205, 0.7), 0 0 60px rgba(179, 157, 219, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-home::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(245, 238, 255, 0.65), transparent);
+      transform: rotate(45deg) translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    .btn-home:hover::before { transform: rotate(45deg) translateX(100%); }
+    .btn-home:hover {
+      background: linear-gradient(135deg, #c9b6f5, #8e6bd0);
+      box-shadow: 0 12px 40px rgba(149, 117, 205, 0.9), 0 0 90px rgba(203, 182, 245, 0.65);
+      transform: translateY(-3px) scale(1.03);
+      color: #ffffff;
+    }
+    .btn-home:hover svg { transform: scale(1.15); }
+    .btn-home:active { transform: translateY(-1px) scale(0.99); }
+
+    .divider {
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(to right, transparent, #b39ddb, transparent);
+      margin: 20px auto 25px;
+      border-radius: 3px;
+      position: relative;
+    }
+    .divider::after {
+      content: '✧';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 18px;
+      background: var(--bg-soft);
+      padding: 0 10px;
+      color: #7e57c2;
+      text-shadow: 0 0 12px rgba(179, 157, 219, 0.95);
+      animation: sparkle 2s ease-in-out infinite;
+    }
+    @keyframes sparkle {
+      0%, 100% { opacity: 1;   text-shadow: 0 0 10px #9575cd; }
+      50%      { opacity: 0.7; text-shadow: 0 0 25px #cbb6f5; }
+    }
+
+    @media (max-width: 480px) {
+      .content-wrapper { padding: 20px 15px; }
+      .btn { padding: 12px 24px; font-size: 14px; width: 100%; justify-content: center; }
+      .button-group { flex-direction: column; gap: 12px; width: 100%; max-width: 280px; margin: 0 auto; }
+      .error-code { letter-spacing: -4px; }
+      .divider { width: 60px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-animation">
+    <div class="grid-overlay"></div>
+
+    <!-- morphing violet aurora -->
+    <div class="aurora-layer">
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    <!-- rising bubbles -->
+    <div class="bubble-layer">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <!-- twinkling sparkles -->
+    <div class="sparkle-layer">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <!-- expanding rings -->
+    <div class="ring-layer">
+      <span></span><span></span><span></span>
+    </div>
+
+    <!-- drifting petals -->
+    <div class="petal-layer">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="error-glow"></div>
+    <h1 class="error-code">404</h1>
+    <div class="divider"></div>
+    <p class="error-message">Page Not Found</p>
+    <p class="error-description">
+      Oops! This page drifted into a soft violet haze. Let’s float you back to calmer skies.
+    </p>
+    <div class="button-group">
+      <button class="btn btn-back" onclick="goBack()" aria-label="Go back to previous page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Go Back
+      </button>
+      <a href="/" class="btn btn-home" aria-label="Go back to homepage">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        Back to Home
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function goBack() {
+      if (document.referrer && document.referrer !== window.location.href) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { goBack(); }
+    });
+
+    // gentle parallax on the background layers (keeps the violet theme interactive)
+    const parallaxLayers = [
+      { el: document.querySelector('.aurora-layer'),  depth: 16 },
+      { el: document.querySelector('.ring-layer'),    depth: 28 },
+      { el: document.querySelector('.sparkle-layer'), depth: 40 },
+      { el: document.querySelector('.petal-layer'),   depth: 52 }
+    ].filter(l => l.el);
+
+    document.addEventListener('mousemove', function (e) {
+      const x = (e.clientX / window.innerWidth  - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      parallaxLayers.forEach(({ el, depth }) => {
+        el.style.transform = `translate(${x * depth}px, ${y * depth}px)`;
+      });
+    });
+  </script>
+</body>
+</html>

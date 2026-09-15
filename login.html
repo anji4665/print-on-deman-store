@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stackly — Print-on-Demand Store | Login</title>
+    <meta name="description"
+        content="Sign in or create an account on Stackly, the premium print-on-demand store for custom apparel, accessories, and more." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        /* ================================================================
+           STACKLY — Print-on-Demand Store  ·  Login Page Styles
+           ================================================================ */
+
+        /* ===== CSS CUSTOM PROPERTIES ===== */
+        :root {
+            /* Primary palette – deep violet/indigo */
+            --primary-50: #f0ecff;
+            --primary-100: #d9d0ff;
+            --primary-200: #b5a3ff;
+            --primary-300: #9179ff;
+            --primary-400: #7b5cfc;
+            --primary-500: #6c3ff5;
+            --primary-600: #5a2de0;
+            --primary-700: #4920c7;
+            --primary-800: #3918a8;
+            --primary-900: #2a1080;
+
+            /* Accent – coral/pink */
+            --accent-400: #ff6b8a;
+            --accent-500: #ff4777;
+            --accent-600: #e0345f;
+
+            /* Neutrals */
+            --gray-50: #f8f9fc;
+            --gray-100: #f0f2f7;
+            --gray-200: #e2e5ed;
+            --gray-300: #c9cdd8;
+            --gray-400: #9ea3b2;
+            --gray-500: #6e7489;
+            --gray-600: #4b5063;
+            --gray-700: #353945;
+            --gray-800: #1f2230;
+            --gray-900: #13141f;
+
+            /* Surfaces */
+            --surface-bg: #0c0d18;
+            --surface-card: rgba(22, 24, 42, 0.75);
+            --surface-card-hover: rgba(30, 33, 56, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --glass-border-hover: rgba(255, 255, 255, 0.12);
+
+            /* Text */
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a3b5;
+            --text-muted: #686b80;
+
+            /* Misc */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+            --shadow-glow: 0 0 60px -15px rgba(108, 63, 245, 0.35);
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--surface-bg);
+            color: var(--text-primary);
+            min-height: 100dvh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--primary-300);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        a:hover {
+            color: var(--primary-200);
+        }
+
+        /* ===== PRELOADER ===== */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface-bg);
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .preloader-inner {
+            text-align: center;
+        }
+
+        .preloader-logo img {
+            width: 130px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            animation: preloaderPulse 1.2s ease-in-out infinite alternate;
+        }
+
+        .preloader-spinner {
+            width: 42px;
+            height: 42px;
+            margin: 1.2rem auto;
+            border: 3px solid rgba(108, 63, 245, 0.15);
+            border-top-color: var(--primary-400);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .preloader-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+        }
+
+        @keyframes preloaderPulse {
+            from {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+
+            to {
+                transform: scale(1.12);
+                opacity: 1;
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== FLOATING BACKGROUND ITEMS ===== */
+        .floating-container {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-cross {
+            position: absolute;
+            top: -5%;
+            animation: floatDown linear infinite;
+            will-change: transform;
+            filter: blur(1px);
+        }
+
+        @keyframes floatDown {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: var(--float-opacity, 0.08);
+            }
+
+            90% {
+                opacity: var(--float-opacity, 0.08);
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* ===== AMBIENT GRADIENT BLOBS ===== */
+        .ambient-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.35;
+        }
+
+        .blob-1 {
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, var(--primary-600), transparent 70%);
+            top: -10%;
+            right: -5%;
+            animation: blobDrift1 18s ease-in-out infinite alternate;
+        }
+
+        .blob-2 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, var(--accent-500), transparent 70%);
+            bottom: -8%;
+            left: -4%;
+            animation: blobDrift2 22s ease-in-out infinite alternate;
+        }
+
+        .blob-3 {
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, #2dd4bf, transparent 70%);
+            top: 50%;
+            left: 40%;
+            opacity: 0.18;
+            animation: blobDrift3 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes blobDrift1 {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(-60px, 40px) scale(1.15);
+            }
+        }
+
+        @keyframes blobDrift2 {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(50px, -30px) scale(1.1);
+            }
+        }
+
+        @keyframes blobDrift3 {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(-40px, -50px) scale(1.2);
+            }
+        }
+
+        /* ===== LAYOUT — MAIN ===== */
+        .login-page {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100dvh;
+        }
+
+        /* ===== BRANDING PANEL (Left) ===== */
+        .branding-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .branding-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(145deg,
+                    rgba(108, 63, 245, 0.12) 0%,
+                    rgba(255, 71, 119, 0.06) 50%,
+                    transparent 100%);
+            pointer-events: none;
+        }
+
+        .branding-content {
+            position: relative;
+            max-width: 420px;
+        }
+
+        /* ---- LOGO (image) ---- */
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .brand-logo-img {
+            width: 200px;
+            height: auto;
+            max-width: 100%;
+            display: block;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 30px rgba(108, 63, 245, 0.35));
+            animation: logoFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .brand-tagline {
+            font-size: 1.05rem;
+            color: var(--primary-300);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+        }
+
+        .brand-description {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        /* Feature items */
+        .brand-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.7rem 1rem;
+            border-radius: var(--radius-sm);
+            background: rgba(108, 63, 245, 0.08);
+            border: 1px solid rgba(108, 63, 245, 0.12);
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: var(--transition-fast);
+        }
+
+        .feature-item:hover {
+            background: rgba(108, 63, 245, 0.14);
+            border-color: rgba(108, 63, 245, 0.22);
+            transform: translateY(-2px);
+            color: var(--text-primary);
+        }
+
+        .feature-item i {
+            color: var(--primary-400);
+            font-size: 1rem;
+        }
+
+        /* Stats */
+        .brand-stats {
+            display: flex;
+            gap: 1.8rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-300), var(--accent-400));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ===== FORM PANEL (Right) ===== */
+        .form-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 2rem;
+            position: relative;
+        }
+
+        .form-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg,
+                    rgba(22, 24, 42, 0.4) 0%,
+                    rgba(22, 24, 42, 0.8) 100%);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+        }
+
+        .form-panel-inner {
+            position: relative;
+            width: 100%;
+            max-width: 440px;
+        }
+
+        /* Mobile brand header – hidden on desktop */
+        .mobile-brand-header {
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1.4rem;
+            justify-content: center;
+        }
+
+        .mobile-brand-logo {
+            height: 42px;
+            width: auto;
+            max-width: 190px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ===== BACK TO HOME BUTTON ===== */
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.5rem 1.05rem;
+            margin-bottom: 1.3rem;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            transition: var(--transition-fast);
+        }
+
+        .back-home i {
+            font-size: 0.78rem;
+            transition: transform var(--transition-fast);
+        }
+
+        .back-home:hover {
+            background: rgba(108, 63, 245, 0.14);
+            border-color: rgba(108, 63, 245, 0.3);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        .back-home:hover i {
+            transform: translateX(-3px);
+        }
+
+        .back-home:focus-visible {
+            outline: 2px solid var(--primary-400);
+            outline-offset: 2px;
+        }
+
+        /* ===== FORM HEADING ===== */
+        .form-heading {
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.3rem;
+        }
+
+        .form-subheading {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            margin-bottom: 1.6rem;
+        }
+
+        /* ===== ROLE TABS ===== */
+        .role-tabs {
+            display: flex;
+            position: relative;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius-md);
+            padding: 4px;
+            margin-bottom: 1.8rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .role-tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-fast);
+            position: relative;
+            z-index: 1;
+        }
+
+        .role-tab i {
+            font-size: 0.95rem;
+        }
+
+        .role-tab:hover:not(.active) {
+            color: var(--text-secondary);
+        }
+
+        .role-tab.active {
+            color: #fff;
+        }
+
+        .tab-indicator {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+            border-radius: var(--radius-sm);
+            transition: transform var(--transition-med);
+            box-shadow: 0 4px 15px rgba(108, 63, 245, 0.3);
+        }
+
+        .role-tab[data-role="employee"].active~.tab-indicator {
+            transform: translateX(100%);
+        }
+
+        /* ===== FORM CONTAINER ===== */
+        .form-container {
+            position: relative;
+            min-height: 320px;
+        }
+
+        .form-wrapper {
+            display: none;
+            opacity: 0;
+        }
+
+        .form-wrapper.active {
+            display: block;
+            animation: fadeSlideIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== INPUT GROUPS ===== */
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.02em;
+        }
+
+        .input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            pointer-events: none;
+            transition: color var(--transition-fast);
+            z-index: 1;
+        }
+
+        .input-wrap input,
+        .input-wrap select {
+            width: 100%;
+            padding: 0.72rem 0.9rem 0.72rem 2.6rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 0.92rem;
+            outline: none;
+            transition: var(--transition-fast);
+        }
+
+        /* Reserve space on the right so typed text never runs under the eye icon */
+        .input-wrap input {
+            padding-right: 2.8rem;
+        }
+
+        /* Select keeps a little room for its own chevron */
+        .input-wrap select {
+            padding-right: 2.4rem;
+        }
+
+        .input-wrap input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-wrap input:focus,
+        .input-wrap select:focus {
+            border-color: var(--primary-400);
+            background: rgba(108, 63, 245, 0.06);
+            box-shadow: 0 0 0 3px rgba(108, 63, 245, 0.12);
+        }
+
+        .input-wrap input:focus~.input-icon,
+        .input-wrap input:focus+.input-icon {
+            color: var(--primary-400);
+        }
+
+        /* Select styling */
+        .input-wrap select {
+            appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ea3b2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+
+        .input-wrap select option {
+            background: var(--gray-800);
+            color: var(--text-primary);
+        }
+
+        /* ==================================================================
+           PASSWORD FIELD — NATIVE BROWSER BUTTON OVERRIDES
+           Edge / IE render their own "reveal password" and "clear" buttons
+           inside password inputs. They sit exactly where our custom eye icon
+           is, which caused the overlap. Hide them completely.
+           NOTE: each selector is in its OWN rule on purpose — an unrecognised
+           selector inside a comma list would invalidate the whole rule.
+           ================================================================== */
+        .input-wrap input::-ms-reveal {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        .input-wrap input::-ms-clear {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        .input-wrap input::-webkit-credentials-auto-fill-button {
+            display: none !important;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .input-wrap input::-webkit-contacts-auto-fill-button {
+            display: none !important;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* ===== PASSWORD TOGGLE ICON ===== */
+        .toggle-pw {
+            position: absolute;
+            top: 50%;
+            right: 14px;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            font-size: 0.9rem;
+            line-height: 1;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color var(--transition-fast);
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .toggle-pw:hover {
+            color: var(--primary-300);
+        }
+
+        /* Two-column row for passwords */
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        /* ===== FORM OPTIONS (remember + forgot) ===== */
+        .form-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.2rem;
+            font-size: 0.82rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: 500;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .remember-me input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            left: 0;
+            width: 17px;
+            height: 17px;
+            border-radius: 4px;
+            border: 1.5px solid var(--glass-border-hover);
+            background: rgba(255, 255, 255, 0.04);
+            transition: var(--transition-fast);
+        }
+
+        .remember-me input:checked~.checkmark {
+            background: var(--primary-500);
+            border-color: var(--primary-500);
+        }
+
+        .remember-me input:checked~.checkmark::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 5px;
+            height: 9px;
+            border: solid #fff;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .forgot-link {
+            color: var(--primary-300);
+            font-weight: 500;
+        }
+
+        .forgot-link:hover {
+            color: var(--accent-400);
+        }
+
+        /* ===== PRIMARY BUTTON ===== */
+        .btn-primary {
+            width: 100%;
+            padding: 0.82rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+            color: #fff;
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-fast);
+            box-shadow: 0 4px 20px rgba(108, 63, 245, 0.3);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--primary-400), var(--accent-500));
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 28px rgba(108, 63, 245, 0.45);
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 12px rgba(108, 63, 245, 0.3);
+        }
+
+        .btn-text,
+        .btn-loader {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-loader {
+            display: none;
+        }
+
+        .btn-primary.loading .btn-text {
+            display: none;
+        }
+
+        .btn-primary.loading .btn-loader {
+            display: inline-block;
+        }
+
+        .btn-primary.loading {
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        /* ===== DIVIDER ===== */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.2rem 0;
+            gap: 0.8rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        .divider span {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* ===== SOCIAL LOGIN ===== */
+        .social-login {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .social-btn {
+            width: 52px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--glass-border-hover);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        /* ===== SWITCH TEXT ===== */
+        .switch-text {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .switch-text a {
+            font-weight: 600;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-text {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* ===== TOAST NOTIFICATION ===== */
+        .toast {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            padding: 1rem 1.3rem;
+            border-radius: var(--radius-md);
+            background: rgba(22, 24, 42, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            transform: translateX(calc(100% + 2rem));
+            opacity: 0;
+            transition: transform var(--transition-med), opacity var(--transition-med);
+            z-index: 10000;
+            max-width: 380px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-color: rgba(52, 211, 153, 0.25);
+        }
+
+        .toast.error {
+            border-color: rgba(255, 71, 87, 0.25);
+        }
+
+        .toast.info {
+            border-color: rgba(108, 63, 245, 0.25);
+        }
+
+        .toast-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .toast-body strong {
+            display: block;
+            font-size: 0.88rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .toast-body p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* ==================================================================
+           RESPONSIVE — TABLET (≤ 900px)
+           ================================================================== */
+        @media (max-width: 900px) {
+            .login-page {
+                grid-template-columns: 1fr;
+            }
+
+            .branding-panel {
+                display: none;
+            }
+
+            .mobile-brand-header {
+                display: flex;
+            }
+
+            .form-panel {
+                min-height: 100dvh;
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* ==================================================================
+           RESPONSIVE — MOBILE (≤ 520px)
+           ================================================================== */
+        @media (max-width: 520px) {
+            html {
+                font-size: 15px;
+            }
+
+            .form-panel {
+                padding: 1.5rem 1rem;
+                align-items: flex-start;
+                padding-top: 2.5rem;
+            }
+
+            .form-panel-inner {
+                max-width: 100%;
+            }
+
+            .form-heading {
+                font-size: 1.45rem;
+            }
+
+            .role-tabs {
+                margin-bottom: 1.4rem;
+            }
+
+            .role-tab {
+                font-size: 0.82rem;
+                padding: 0.6rem 0.5rem;
+                gap: 0.35rem;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .btn-primary {
+                padding: 0.75rem 1rem;
+            }
+
+            .social-login {
+                gap: 0.6rem;
+            }
+
+            .social-btn {
+                width: 48px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .toast {
+                top: auto;
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+                transform: translateY(calc(100% + 2rem));
+            }
+
+            .toast.show {
+                transform: translateY(0);
+            }
+
+            .brand-features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ==================================================================
+           RESPONSIVE — LARGE DESKTOP (≥ 1400px)
+           ================================================================== */
+        @media (min-width: 1400px) {
+            .branding-content {
+                max-width: 480px;
+            }
+
+            .brand-logo-img {
+                width: 230px;
+            }
+
+            .form-panel-inner {
+                max-width: 460px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ===== PRELOADER ===== -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-logo">
+                <img src="Stackly_logo.webp" alt="Stackly" />
+            </div>
+            <div class="preloader-spinner"></div>
+            <p class="preloader-text">Loading Stackly…</p>
+        </div>
+    </div>
+
+    <!-- ===== FLOATING BACKGROUND ITEMS ===== -->
+    <div id="floatingCrosses" class="floating-container" aria-hidden="true"></div>
+
+    <!-- ===== AMBIENT GRADIENT BLOBS ===== -->
+    <div class="ambient-blob blob-1" aria-hidden="true"></div>
+    <div class="ambient-blob blob-2" aria-hidden="true"></div>
+    <div class="ambient-blob blob-3" aria-hidden="true"></div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="login-page">
+        <!-- LEFT BRANDING PANEL -->
+        <section class="branding-panel" aria-label="Stackly branding">
+            <div class="branding-content">
+                <div class="brand-logo">
+                    <img src="Stackly_logo.webp" alt="Stackly" class="brand-logo-img" />
+                </div>
+                <p class="brand-tagline">Print-on-Demand Store</p>
+                <p class="brand-description">
+                    Design. Create. Sell.<br />
+                    Your custom products, effortlessly delivered worldwide.
+                </p>
+                <div class="brand-features">
+                    <div class="feature-item">
+                        <i class="fas fa-palette"></i>
+                        <span>Custom Designs</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-truck-fast"></i>
+                        <span>Global Shipping</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shield-halved"></i>
+                        <span>Quality Guaranteed</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-headset"></i>
+                        <span>24/7 Support</span>
+                    </div>
+                </div>
+                <div class="brand-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Products Sold</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">12K+</span>
+                        <span class="stat-label">Happy Creators</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">99%</span>
+                        <span class="stat-label">Satisfaction</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RIGHT FORM PANEL -->
+        <section class="form-panel" aria-label="Authentication forms">
+            <div class="form-panel-inner">
+                <!-- Mobile Brand Header -->
+                <div class="mobile-brand-header">
+                    <img src="Stackly_logo.webp" alt="Stackly" class="mobile-brand-logo" />
+                </div>
+
+                <!-- Back to Home -->
+                <a href="index.html" class="back-home">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Home</span>
+                </a>
+
+                <h2 class="form-heading" id="formHeading">Welcome Back</h2>
+                <p class="form-subheading">Sign in to manage your print-on-demand store</p>
+
+                <!-- ROLE TABS -->
+                <div class="role-tabs" role="tablist" aria-label="Account type">
+                    <button class="role-tab active" data-role="customer" role="tab"
+                        aria-selected="true" onclick="switchRole('customer')" id="tabCustomer">
+                        <i class="fas fa-user"></i>
+                        <span>Customer</span>
+                    </button>
+                    <button class="role-tab" data-role="employee" role="tab"
+                        aria-selected="false" onclick="switchRole('employee')" id="tabEmployee">
+                        <i class="fas fa-id-badge"></i>
+                        <span>Employee</span>
+                    </button>
+                    <div class="tab-indicator"></div>
+                </div>
+
+                <!-- ===== FORM CONTAINER ===== -->
+                <div id="formContainer" class="form-container">
+
+                    <!-- ──── CUSTOMER LOGIN ──── -->
+                    <div class="form-wrapper active" id="customerLoginForm">
+                        <form onsubmit="handleLogin(event,'customer')" autocomplete="on" novalidate>
+                            <div class="input-group">
+                                <label for="customerLoginEmail">Email Address</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-envelope input-icon"></i>
+                                    <input type="email" id="customerLoginEmail" placeholder="you@gmail.com"
+                                        autocomplete="email" required />
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="customerLoginPassword">Password</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-lock input-icon"></i>
+                                    <input type="password" id="customerLoginPassword" placeholder="Enter password"
+                                        autocomplete="current-password" required />
+                                    <i class="fas fa-eye toggle-pw"
+                                        onclick="togglePassword('customerLoginPassword', this)"
+                                        aria-label="Show password" tabindex="0"></i>
+                                </div>
+                            </div>
+                            <div class="form-options">
+                                <label class="remember-me">
+                                    <input type="checkbox" id="customerRemember" />
+                                    <span class="checkmark"></span>
+                                    Remember me
+                                </label>
+                                <a href="404.html" class="forgot-link">Forgot password?</a>
+                            </div>
+                            <button type="submit" class="btn-primary" id="customerLoginBtn">
+                                <span class="btn-text">Sign In</span>
+                                <span class="btn-loader"><i class="fas fa-circle-notch fa-spin"></i></span>
+                            </button>
+                            <div class="divider"><span>or continue with</span></div>
+                            <div class="social-login">
+                                <button type="button" class="social-btn" aria-label="Sign in with Google"
+                                    onclick="goTo404()">
+                                    <i class="fab fa-google"></i>
+                                </button>
+                                <button type="button" class="social-btn" aria-label="Sign in with Apple"
+                                    onclick="goTo404()">
+                                    <i class="fab fa-apple"></i>
+                                </button>
+                                <button type="button" class="social-btn" aria-label="Sign in with Facebook"
+                                    onclick="goTo404()">
+                                    <i class="fab fa-facebook-f"></i>
+                                </button>
+                            </div>
+                            <p class="switch-text">
+                                Don't have an account?
+                                <a href="javascript:void(0)" onclick="showCreateAccount('customer')">Create Account</a>
+                            </p>
+                        </form>
+                    </div>
+
+                    <!-- ──── CUSTOMER CREATE ACCOUNT ──── -->
+                    <div class="form-wrapper" id="customerCreateForm">
+                        <form onsubmit="handleCreateAccount(event,'customer')" autocomplete="on" novalidate>
+                            <div class="input-group">
+                                <label for="customerCreateName">Full Name</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-user input-icon"></i>
+                                    <input type="text" id="customerCreateName" placeholder="John Doe"
+                                        autocomplete="name" required />
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="customerCreateEmail">Email Address</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-envelope input-icon"></i>
+                                    <input type="email" id="customerCreateEmail" placeholder="you@gmail.com"
+                                        autocomplete="email" required />
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="customerCreatePhone">Phone Number</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-phone input-icon"></i>
+                                    <input type="tel" id="customerCreatePhone" placeholder="9876543210"
+                                        autocomplete="tel" maxlength="10" required />
+                                </div>
+                            </div>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="customerCreatePassword">Password</label>
+                                    <div class="input-wrap">
+                                        <i class="fas fa-lock input-icon"></i>
+                                        <input type="password" id="customerCreatePassword" placeholder="Create password"
+                                            autocomplete="new-password" required />
+                                        <i class="fas fa-eye toggle-pw"
+                                            onclick="togglePassword('customerCreatePassword', this)"
+                                            aria-label="Show password" tabindex="0"></i>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label for="customerCreateConfirmPassword">Confirm Password</label>
+                                    <div class="input-wrap">
+                                        <i class="fas fa-lock input-icon"></i>
+                                        <input type="password" id="customerCreateConfirmPassword"
+                                            placeholder="Confirm password" autocomplete="new-password" required />
+                                        <i class="fas fa-eye toggle-pw"
+                                            onclick="togglePassword('customerCreateConfirmPassword', this)"
+                                            aria-label="Show password" tabindex="0"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary" id="customerCreateBtn">
+                                <span class="btn-text">Create Account</span>
+                                <span class="btn-loader"><i class="fas fa-circle-notch fa-spin"></i></span>
+                            </button>
+                            <p class="switch-text">
+                                Already have an account?
+                                <a href="javascript:void(0)" onclick="showLogin('customer')">Sign In</a>
+                            </p>
+                        </form>
+                    </div>
+
+                    <!-- ──── EMPLOYEE LOGIN ──── -->
+                    <div class="form-wrapper" id="employeeLoginForm">
+                        <form onsubmit="handleLogin(event,'employee')" autocomplete="on" novalidate>
+                            <div class="input-group">
+                                <label for="employeeLoginId">Employee ID or Email</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-id-card input-icon"></i>
+                                    <input type="text" id="employeeLoginId" placeholder="EMP-1234 or you@gmail.com"
+                                        autocomplete="username" required />
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="employeeLoginDept">Department</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-building input-icon"></i>
+                                    <select id="employeeLoginDept">
+                                        <option value="production">Production</option>
+                                        <option value="design">Design</option>
+                                        <option value="shipping">Shipping & Logistics</option>
+                                        <option value="support">Customer Support</option>
+                                        <option value="admin">Administration</option>
+                                        <option value="marketing">Marketing</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="employeeLoginPassword">Password</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-lock input-icon"></i>
+                                    <input type="password" id="employeeLoginPassword" placeholder="Enter password"
+                                        autocomplete="current-password" required />
+                                    <i class="fas fa-eye toggle-pw"
+                                        onclick="togglePassword('employeeLoginPassword', this)"
+                                        aria-label="Show password" tabindex="0"></i>
+                                </div>
+                            </div>
+                            <div class="form-options">
+                                <label class="remember-me">
+                                    <input type="checkbox" id="employeeRemember" />
+                                    <span class="checkmark"></span>
+                                    Remember me
+                                </label>
+                                <a href="404.html" class="forgot-link">Forgot password?</a>
+                            </div>
+                            <button type="submit" class="btn-primary" id="employeeLoginBtn">
+                                <span class="btn-text">Sign In</span>
+                                <span class="btn-loader"><i class="fas fa-circle-notch fa-spin"></i></span>
+                            </button>
+                            <p class="switch-text">
+                                Need an employee account?
+                                <a href="javascript:void(0)" onclick="showCreateAccount('employee')">Register</a>
+                            </p>
+                        </form>
+                    </div>
+
+                    <!-- ──── EMPLOYEE CREATE ACCOUNT ──── -->
+                    <div class="form-wrapper" id="employeeCreateForm">
+                        <form onsubmit="handleCreateAccount(event,'employee')" autocomplete="on" novalidate>
+                            <div class="input-group">
+                                <label for="employeeCreateName">Full Name</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-user input-icon"></i>
+                                    <input type="text" id="employeeCreateName" placeholder="Jane Smith"
+                                        autocomplete="name" required />
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="employeeCreateEmpId">Employee ID</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-id-card input-icon"></i>
+                                    <input type="text" id="employeeCreateEmpId" placeholder="EMP-1234" required />
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="employeeCreateEmail">Email Address</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-envelope input-icon"></i>
+                                    <input type="email" id="employeeCreateEmail" placeholder="you@gmail.com"
+                                        autocomplete="email" required />
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="employeeCreateDept">Department</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-building input-icon"></i>
+                                    <select id="employeeCreateDept">
+                                        <option value="production">Production</option>
+                                        <option value="design">Design</option>
+                                        <option value="shipping">Shipping & Logistics</option>
+                                        <option value="support">Customer Support</option>
+                                        <option value="admin">Administration</option>
+                                        <option value="marketing">Marketing</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="employeeCreatePassword">Password</label>
+                                    <div class="input-wrap">
+                                        <i class="fas fa-lock input-icon"></i>
+                                        <input type="password" id="employeeCreatePassword" placeholder="Create password"
+                                            autocomplete="new-password" required />
+                                        <i class="fas fa-eye toggle-pw"
+                                            onclick="togglePassword('employeeCreatePassword', this)"
+                                            aria-label="Show password" tabindex="0"></i>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label for="employeeCreateConfirmPassword">Confirm Password</label>
+                                    <div class="input-wrap">
+                                        <i class="fas fa-lock input-icon"></i>
+                                        <input type="password" id="employeeCreateConfirmPassword"
+                                            placeholder="Confirm password" autocomplete="new-password" required />
+                                        <i class="fas fa-eye toggle-pw"
+                                            onclick="togglePassword('employeeCreateConfirmPassword', this)"
+                                            aria-label="Show password" tabindex="0"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary" id="employeeCreateBtn">
+                                <span class="btn-text">Register</span>
+                                <span class="btn-loader"><i class="fas fa-circle-notch fa-spin"></i></span>
+                            </button>
+                            <p class="switch-text">
+                                Already registered?
+                                <a href="javascript:void(0)" onclick="showLogin('employee')">Sign In</a>
+                            </p>
+                        </form>
+                    </div>
+
+                </div>
+                <!-- /formContainer -->
+
+                <p class="footer-text">&copy; 2026 Stackly Inc. All rights reserved.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast" role="alert" aria-live="assertive">
+        <span class="toast-icon" id="toastIconEl">✅</span>
+        <div class="toast-body">
+            <strong id="toastTitle">Title</strong>
+            <p id="toastMsg">Message</p>
+        </div>
+    </div>
+
+    <script>
+        // ===== FLOATING PRINT-ON-DEMAND ITEMS =====
+        (function () {
+            const container = document.getElementById('floatingCrosses');
+            const podSymbols = ['👕', '🎨', '🖨️', '📦', '✏️', '🧢', '☕', '🖼️', '🎁', '🛍️'];
+            for (let i = 0; i < 14; i++) {
+                const span = document.createElement('span');
+                span.className = 'floating-cross';
+                span.textContent = podSymbols[Math.floor(Math.random() * podSymbols.length)];
+                span.style.left = Math.random() * 90 + '%';
+                span.style.fontSize = (1 + Math.random() * 2.2) + 'rem';
+                span.style.animationDuration = (12 + Math.random() * 18) + 's';
+                span.style.animationDelay = (Math.random() * 12) + 's';
+                const floatOpacity = (0.05 + Math.random() * 0.1);
+                span.style.opacity = floatOpacity;
+                span.style.setProperty('--float-opacity', floatOpacity);
+                container.appendChild(span);
+            }
+        })();
+
+        // ===== STATE =====
+        let currentRole = 'customer';
+        let currentMode = 'login';
+
+        const formContainer = document.getElementById('formContainer');
+        const roleTabs = document.querySelectorAll('.role-tab');
+        const toastEl = document.getElementById('toast');
+        const toastIconEl = document.getElementById('toastIconEl');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMsg = document.getElementById('toastMsg');
+        let toastTimer;
+
+        // ===== UTILITIES =====
+        function isMobile() {
+            return window.innerWidth <= 520;
+        }
+
+        function isStrongPassword(pwd) {
+            if (!pwd || pwd.length < 8) return false;
+            const hasLetter = /[A-Za-z]/.test(pwd);
+            const hasDigit = /[0-9]/.test(pwd);
+            const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(pwd);
+            return hasLetter && hasDigit && hasSpecial;
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+        }
+
+        function isGmailEmail(email) {
+            return email.trim().toLowerCase().endsWith('@gmail.com');
+        }
+
+        // ===== TOAST NOTIFICATIONS =====
+        function showToast(type, title, msg) {
+            clearTimeout(toastTimer);
+            toastEl.className = 'toast ' + type;
+            toastIconEl.textContent = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+            toastTitle.textContent = title;
+            toastMsg.textContent = msg;
+            requestAnimationFrame(() => {
+                toastEl.classList.add('show');
+            });
+            toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3200);
+        }
+
+        // ===== SOCIAL LOGIN REDIRECT =====
+        function goTo404() {
+            window.location.href = '404.html';
+        }
+
+        // ===== PASSWORD TOGGLE =====
+        function togglePassword(inputId, iconEl) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            iconEl.classList.toggle('fa-eye', !isPassword);
+            iconEl.classList.toggle('fa-eye-slash', isPassword);
+            iconEl.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+        }
+
+        // ===== INPUT FILTERS =====
+        function filterNameKeypress(e) {
+            const char = String.fromCharCode(e.which || e.keyCode);
+            if (!/[A-Za-z\s]/.test(char)) e.preventDefault();
+        }
+
+        function sanitizeName(input) {
+            input.value = input.value.replace(/[^A-Za-z\s]/g, '');
+        }
+
+        function filterPhoneKeypress(e) {
+            const char = String.fromCharCode(e.which || e.keyCode);
+            if (!/[0-9]/.test(char)) e.preventDefault();
+            if (this.value.replace(/\D/g, '').length >= 10) e.preventDefault();
+        }
+
+        function sanitizePhone(input) {
+            let val = input.value.replace(/\D/g, '');
+            if (val.length > 10) val = val.slice(0, 10);
+            input.value = val;
+        }
+
+        function setupInputFilters() {
+            ['customerCreateName', 'employeeCreateName'].forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.addEventListener('keypress', filterNameKeypress);
+                    input.addEventListener('input', function () { sanitizeName(this); });
+                }
+            });
+            const phoneInput = document.getElementById('customerCreatePhone');
+            if (phoneInput) {
+                phoneInput.addEventListener('keypress', filterPhoneKeypress);
+                phoneInput.addEventListener('input', function () { sanitizePhone(this); });
+            }
+        }
+
+        // ===== FORM SWITCHING =====
+        function getFormId(role, mode) {
+            return role + (mode === 'login' ? 'LoginForm' : 'CreateForm');
+        }
+
+        function switchToForm(targetRole, targetMode) {
+            const allWrappers = formContainer.querySelectorAll('.form-wrapper');
+            const targetId = getFormId(targetRole, targetMode);
+            const targetWrapper = document.getElementById(targetId);
+            if (!targetWrapper || targetWrapper.classList.contains('active')) return;
+
+            const currentActive = formContainer.querySelector('.form-wrapper.active');
+            if (currentActive) {
+                currentActive.style.animation = 'fadeSlideIn 0.3s ease reverse forwards';
+                setTimeout(() => {
+                    currentActive.classList.remove('active');
+                    currentActive.style.animation = '';
+                }, 280);
+            }
+
+            setTimeout(() => {
+                allWrappers.forEach(w => w.classList.remove('active'));
+                targetWrapper.classList.add('active');
+                targetWrapper.style.animation = 'fadeSlideIn 0.4s ease forwards';
+            }, 100);
+
+            currentRole = targetRole;
+            currentMode = targetMode;
+
+            // Update heading text
+            const heading = document.getElementById('formHeading');
+            if (heading) {
+                if (targetMode === 'login') {
+                    heading.textContent = 'Welcome Back';
+                } else {
+                    heading.textContent = targetRole === 'customer' ? 'Create Account' : 'Employee Registration';
+                }
+            }
+
+            if (isMobile()) {
+                requestAnimationFrame(() => {
+                    const panelTop = formContainer.getBoundingClientRect().top + window.scrollY - 10;
+                    window.scrollTo({ top: panelTop, behavior: 'smooth' });
+                });
+            }
+        }
+
+        function showLogin(role) { switchToForm(role, 'login'); }
+
+        function showCreateAccount(role) { switchToForm(role, 'create'); }
+
+        function switchRole(role) {
+            if (role === currentRole && currentMode === 'login') return;
+            roleTabs.forEach(tab => tab.classList.toggle('active', tab.dataset.role === role));
+            switchToForm(role, 'login');
+        }
+
+        // ===== LOADING SIMULATION =====
+        function simulateLoading(btnId, duration = 1200) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return Promise.resolve();
+            btn.classList.add('loading');
+            return new Promise(resolve => setTimeout(() => {
+                btn.classList.remove('loading');
+                resolve();
+            }, duration));
+        }
+
+        // ===== LOGIN HANDLER =====
+        function handleLogin(event, role) {
+            event.preventDefault();
+            const btnId = role === 'customer' ? 'customerLoginBtn' : 'employeeLoginBtn';
+            let email = '', password = '';
+
+            if (role === 'customer') {
+                email = (document.getElementById('customerLoginEmail')?.value || '').trim();
+                password = document.getElementById('customerLoginPassword')?.value || '';
+                if (!email || !isValidEmail(email) || !isGmailEmail(email)) {
+                    showToast('error', 'Invalid Email', 'Please enter a valid Gmail address.');
+                    return;
+                }
+            } else {
+                email = (document.getElementById('employeeLoginId')?.value || '').trim();
+                password = document.getElementById('employeeLoginPassword')?.value || '';
+                if (email.includes('@')) {
+                    if (!isValidEmail(email) || !isGmailEmail(email)) {
+                        showToast('error', 'Invalid Email', 'Email must be a valid Gmail address.');
+                        return;
+                    }
+                } else {
+                    if (!email) {
+                        showToast('error', 'Invalid ID', 'Please enter your Employee ID or email.');
+                        return;
+                    }
+                }
+            }
+
+            if (!isStrongPassword(password)) {
+                showToast('error', 'Weak Password',
+                    'Password must be at least 8 characters with letters, numbers & special chars.');
+                return;
+            }
+
+            simulateLoading(btnId).then(() => {
+                const loggedInName = email.includes('@') ?
+                    email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) :
+                    email;
+                localStorage.setItem('loggedInUserEmail', email);
+                localStorage.setItem('loggedInUserName', loggedInName);
+                localStorage.setItem('userRole', role);
+                localStorage.setItem('loginMethod', email.includes('@') ? 'email' : 'empid');
+
+                if (role === 'employee') {
+                    const deptEl = document.getElementById('employeeLoginDept');
+                    const dept = deptEl ? (deptEl.options[deptEl.selectedIndex]?.text || deptEl.value) : 'General';
+                    localStorage.setItem('loggedInDept', dept);
+                    localStorage.setItem('stacklyUserEmail', email);
+                    localStorage.setItem('stacklyUserName', loggedInName);
+                    localStorage.setItem('stacklyStaffRole', dept);
+                } else {
+                    localStorage.setItem('loggedInDept', '');
+                }
+
+                localStorage.setItem('loginTimestamp', new Date().toISOString());
+                const dashboardUrl = role === 'customer' ? 'client_dashboard.html' : 'employee-dashboard.html';
+                const roleLabel = role === 'customer' ? 'Client' : 'Staff';
+                showToast('success', `Welcome, ${loggedInName}!`,
+                    `Redirecting to your ${roleLabel} dashboard...`);
+                setTimeout(() => window.location.href = dashboardUrl, 1400);
+            });
+        }
+
+        // ===== CREATE ACCOUNT HANDLER =====
+        function handleCreateAccount(event, role) {
+            event.preventDefault();
+            const nameId = role + 'CreateName';
+            const nameInput = document.getElementById(nameId);
+            const name = nameInput ? nameInput.value.trim() : '';
+
+            if (!/^[A-Za-z\s]{2,}$/.test(name)) {
+                showToast('error', 'Invalid Name',
+                    'Name must contain only alphabets and spaces (min 2 chars).');
+                if (nameInput) nameInput.focus();
+                return;
+            }
+
+            const emailId = role + 'CreateEmail';
+            const emailInput = document.getElementById(emailId);
+            const email = emailInput ? emailInput.value.trim() : '';
+
+            if (!email || !isValidEmail(email)) {
+                showToast('error', 'Invalid Email', 'Please enter a valid email address.');
+                if (emailInput) emailInput.focus();
+                return;
+            }
+
+            if (!isGmailEmail(email)) {
+                showToast('error', 'Email Restriction', 'Email must end with @gmail.com.');
+                if (emailInput) emailInput.focus();
+                return;
+            }
+
+            if (role === 'customer') {
+                const phoneInput = document.getElementById('customerCreatePhone');
+                const phone = phoneInput ? phoneInput.value.replace(/\D/g, '') : '';
+                if (phone.length !== 10) {
+                    showToast('error', 'Invalid Phone', 'Phone number must be exactly 10 digits.');
+                    if (phoneInput) phoneInput.focus();
+                    return;
+                }
+            }
+
+            const passwordId = role + 'CreatePassword';
+            const confirmId = role + 'CreateConfirmPassword';
+            const password = document.getElementById(passwordId)?.value || '';
+            const confirm = document.getElementById(confirmId)?.value || '';
+
+            if (password !== confirm) {
+                showToast('error', 'Password Mismatch', 'Passwords do not match.');
+                return;
+            }
+
+            if (!isStrongPassword(password)) {
+                showToast('error', 'Weak Password',
+                    'Password must be 8+ chars with letters, numbers & special chars.');
+                return;
+            }
+
+            const btnId = role + 'CreateBtn';
+            simulateLoading(btnId, 1400).then(() => {
+                const userName = name.split(' ')[0] || 'User';
+                localStorage.setItem('loggedInUserEmail', email);
+                localStorage.setItem('loggedInUserName', userName);
+                localStorage.setItem('userRole', role);
+                localStorage.setItem('loginMethod', 'email');
+
+                if (role === 'employee') {
+                    const deptEl = document.getElementById('employeeCreateDept');
+                    const dept = deptEl ? (deptEl.options[deptEl.selectedIndex]?.text || deptEl.value) : 'General';
+                    localStorage.setItem('loggedInDept', dept);
+                    localStorage.setItem('stacklyUserEmail', email);
+                    localStorage.setItem('stacklyUserName', userName);
+                    localStorage.setItem('stacklyStaffRole', dept);
+                } else {
+                    localStorage.setItem('loggedInDept', '');
+                }
+
+                localStorage.setItem('loginTimestamp', new Date().toISOString());
+                showToast('success',
+                    role === 'employee' ? 'Registration Submitted' : 'Account Created!',
+                    role === 'employee' ?
+                        `Thank you, ${userName}! Pending admin approval.` :
+                        `Welcome, ${userName}! Please sign in.`
+                );
+
+                if (nameInput) nameInput.value = '';
+                if (emailInput) emailInput.value = '';
+                document.getElementById(passwordId).value = '';
+                document.getElementById(confirmId).value = '';
+
+                if (role === 'customer') {
+                    const phoneInput = document.getElementById('customerCreatePhone');
+                    if (phoneInput) phoneInput.value = '';
+                }
+                if (role === 'employee') {
+                    const empIdInput = document.getElementById('employeeCreateEmpId');
+                    if (empIdInput) empIdInput.value = '';
+                }
+
+                [passwordId, confirmId].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.type = 'password';
+                });
+
+                setTimeout(() => {
+                    switchToForm(role, 'login');
+                    const loginEmailId = role === 'customer' ? 'customerLoginEmail' : 'employeeLoginId';
+                    const loginEl = document.getElementById(loginEmailId);
+                    if (loginEl) loginEl.value = email;
+                }, 1800);
+            });
+        }
+
+        // ===== DOM READY =====
+        document.addEventListener('DOMContentLoaded', () => {
+            // ========== PRELOADER HANDLING ==========
+            const preloader = document.getElementById('preloader');
+
+            const hidePreloader = () => {
+                if (!preloader || preloader.classList.contains('hidden')) return;
+                preloader.classList.add('hidden');
+                document.body.style.overflow = '';
+                setTimeout(() => {
+                    if (preloader && preloader.parentNode) {
+                        preloader.remove();
+                    }
+                }, 600);
+            };
+
+            // Fallback timer
+            const preloaderTimer = setTimeout(hidePreloader, 4000);
+
+            window.addEventListener('load', () => {
+                setTimeout(hidePreloader, 1200);
+                clearTimeout(preloaderTimer);
+            });
+
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted) {
+                    clearTimeout(preloaderTimer);
+                    hidePreloader();
+                }
+            });
+
+            // Initialize form state
+            const customerLogin = document.getElementById('customerLoginForm');
+            if (customerLogin) {
+                formContainer.querySelectorAll('.form-wrapper').forEach(w => w.classList.remove('active'));
+                customerLogin.classList.add('active');
+            }
+
+            currentRole = 'customer';
+            currentMode = 'login';
+            roleTabs.forEach(tab => tab.classList.toggle('active', tab.dataset.role === 'customer'));
+
+            setupInputFilters();
+        });
+
+        // ===== KEYBOARD SHORTCUTS =====
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && e.key === '1') { e.preventDefault(); switchRole('customer'); }
+            if (e.ctrlKey && e.key === '2') { e.preventDefault(); switchRole('employee'); }
+        });
+    </script>
+</body>
+
+</html>
