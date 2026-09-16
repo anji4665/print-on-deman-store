@@ -679,20 +679,62 @@
             { q: 'Who do I contact for technical issues?', a: 'Use the <strong>Help &amp; Support</strong> section to reach the production support team via live chat, email or phone.' }
         ];
 
-        /* ========== SESSION ========== */
-        const userName = localStorage.getItem('loggedInEmpName') || 'Stackly Employee';
-        const userEmail = localStorage.getItem('loggedInEmpEmail') || 'employee@stackly.com';
-        const userRole = localStorage.getItem('userRole');
-        if (userRole !== 'employee') { window.location.href = 'index.html'; }
+        /* ==============================================================
+           SESSION — robust retrieval of name & email for bottom-left
+           ============================================================== */
+        (function () {
+            // Try every possible key that the login page might have set
+            const storedEmail =
+                localStorage.getItem('loggedInEmpEmail') ||
+                localStorage.getItem('stacklyUserEmail') ||
+                localStorage.getItem('loggedInUserEmail') ||
+                'employee@stackly.com';
+
+            const storedName =
+                localStorage.getItem('loggedInEmpName') ||
+                localStorage.getItem('stacklyUserName') ||
+                localStorage.getItem('loggedInUserName') ||
+                'Stackly Employee';
+
+            // If name is missing, derive from email prefix
+            let displayName = storedName;
+            if (!displayName || displayName === 'Stackly Employee') {
+                const prefix = storedEmail.split('@')[0];
+                if (prefix && prefix.includes('.')) {
+                    displayName = prefix
+                        .replace(/[._]/g, ' ')
+                        .replace(/\b\w/g, c => c.toUpperCase());
+                } else if (prefix) {
+                    displayName = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+                }
+            }
+
+            // Expose to the rest of the script
+            window.__employeeName = displayName;
+            window.__employeeEmail = storedEmail;
+
+            // Security: redirect if not logged in as employee
+            const userRole = localStorage.getItem('userRole');
+            if (userRole !== 'employee') {
+                window.location.href = 'index.html';
+                return;
+            }
+        })();
+
+        const userName = window.__employeeName;
+        const userEmail = window.__employeeEmail;
 
         /* ========== INIT ========== */
         function init() {
             const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+            // Sidebar footer (bottom-left)
             document.getElementById('sidebarName').textContent = userName;
             document.getElementById('sidebarAvatar').textContent = initials;
             document.getElementById('sidebarRole').textContent = userEmail;
+            // Header
             document.getElementById('headerName').textContent = userName;
             document.getElementById('headerAvatar').textContent = initials;
+            // Profile
             document.getElementById('profileName').textContent = userName;
             document.getElementById('profileEmail').textContent = userEmail;
             document.getElementById('profileAvatar').textContent = initials;
@@ -1099,6 +1141,9 @@
             const name = document.getElementById('editName').value.trim();
             if (!name) { showToast('error', 'Invalid Name', 'Name cannot be empty.'); return; }
             localStorage.setItem('loggedInEmpName', name);
+            localStorage.setItem('stacklyUserName', name);
+            // Update in-memory and UI
+            window.__employeeName = name;
             init();
             showToast('success', 'Profile Updated', 'Your profile has been saved.');
         }
